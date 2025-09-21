@@ -1,0 +1,17 @@
+# macOS / IDE
+.DS_Store
+.vscode/
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# Data & outputs (kept local)
+data/
+runs/
+
+# Keep empty dir markers
+!data/**/.gitkeep
+!runs/**/.gitkeep
