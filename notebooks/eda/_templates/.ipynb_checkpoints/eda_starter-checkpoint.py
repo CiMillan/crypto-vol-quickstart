@@ -8,10 +8,6 @@
 #       format_name: percent
 #       format_version: '1.3'
 #       jupytext_version: 1.17.3
-#   kernelspec:
-#     display_name: Python 3.11 (.venv)
-#     language: python
-#     name: crypto-vol-quickstart-311
 # ---
 
 # %% [markdown]
@@ -41,21 +37,11 @@ use_mpl_defaults()
 #       format_name: percent
 #       format_version: '1.3'
 #       jupytext_version: 1.17.3
-#   kernelspec:
-#     display_name: Python 3.11 (.venv)
-#     language: python
-#     name: crypto-vol-quickstart-311
 # ---
 
 # %% [markdown]
 # # EDA Starter Notebook
 # Quick checks to get familiar with the dataset structure and basic return/volatility views.
-
-# %%
-pip install jupytext
-
-# %% [markdown]
-# hello world
 
 # %%
 import os, math

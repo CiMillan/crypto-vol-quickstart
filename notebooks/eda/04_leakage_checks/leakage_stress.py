@@ -12,6 +12,36 @@
 # ---
 
 # %% [markdown]
+# ## Plot defaults (project-wide)
+# This cell ensures consistent Matplotlib styling and date axes.
+# %%
+# Make 'configs' importable from notebooks (.ipynb or .py)
+import sys, os
+from pathlib import Path
+try:
+    HERE = Path(__file__).parent
+except NameError:
+    HERE = Path.cwd()
+ROOT = (HERE / "../../..").resolve()
+if str(ROOT) not in sys.path:
+    sys.path.append(str(ROOT))
+from configs.plots.mpl_defaults import use_mpl_defaults, format_date_axis
+use_mpl_defaults()
+
+# ---
+# jupyter:
+#   jupytext:
+#     cell_metadata_filter: -all
+#     formats: ipynb,py:percent
+#     notebook_metadata_filter: jupytext,text_representation,kernelspec
+#     text_representation:
+#       extension: .py
+#       format_name: percent
+#       format_version: '1.3'
+#       jupytext_version: 1.17.3
+# ---
+
+# %% [markdown]
 # # Leakage Stress Tests
 # Tools to detect potential target leakage and time-split issues.
 # - ACF of target (autocorrelation)
