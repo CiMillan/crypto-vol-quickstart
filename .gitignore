@@ -30,3 +30,9 @@ reports/tables/
 
 # VS Code
 .vscode/
+
+# Keep data/ out of git by default but allow docs/skeleton
+data/**
+!data/**/
+!data/**/README.md
+!data/**/.gitkeep
