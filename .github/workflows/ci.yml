@@ -1,0 +1,30 @@
+name: CI
+on:
+  push:
+  pull_request:
+jobs:
+  lint-and-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: python -m pip install --upgrade pip
+      - run: pip install ruff black
+      - run: ruff check .
+      - run: black --check .
+      # smoke: just import key modules (no net calls to exchanges in CI)
+      - run: python - <<'PY'
+import importlib
+for m in [
+  "src.utils.io",
+  "src.data.ccxt_download",
+  "src.data.binance_funding",
+  "src.features.make_features",
+  "src.modeling.run_experiments",
+  "src.backtest.vol_targeting",
+]:
+    importlib.import_module(m)
+print("Smoke OK")
+PY
