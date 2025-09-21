@@ -15,3 +15,18 @@ runs/
 # Keep empty dir markers
 !data/**/.gitkeep
 !runs/**/.gitkeep
+# Python venv & cache
+.venv/
+__pycache__/
+*.pyc
+
+# Data & runs (keep structure via .gitkeep if needed)
+data/raw/
+data/interim/
+data/processed/
+runs/
+reports/figures/
+reports/tables/
+
+# VS Code
+.vscode/
