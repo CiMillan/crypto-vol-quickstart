@@ -42,3 +42,10 @@ data/**
 !data/**/
 !data/**/README.md
 !data/**/.gitkeep
+
+# Keep data/ out of git by default, but allow docs/skeleton
+/data/**
+!/data/
+!/data/**/
+!data/**/.gitkeep
+!data/**/README.md
