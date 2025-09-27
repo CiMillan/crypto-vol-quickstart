@@ -49,3 +49,18 @@ data/**
 !/data/**/
 !data/**/.gitkeep
 !data/**/README.md
+.envrc
+.venv/
+# build/packaging noise
+src/*.egg-info/
+*.egg-info/
+dist/
+build/
+
+# notebooks noise
+.ipynb_checkpoints/
+notebooks/**/.ipynb_checkpoints/
+
+# backups
+*.bak
+.python-version

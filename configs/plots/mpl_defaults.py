@@ -1,3 +1,16 @@
+# ---
+# jupyter:
+#   jupytext:
+#     cell_metadata_filter: -all
+#     notebook_metadata_filter: jupytext,text_representation,kernelspec
+#     text_representation:
+#       extension: .py
+#       format_name: percent
+#       format_version: '1.3'
+#       jupytext_version: 1.16.2
+# ---
+
+# %%
 """
 Matplotlib defaults for crypto-vol-quickstart.
 
@@ -14,6 +27,7 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 
+# %%
 def use_mpl_defaults(dpi: int = 150, base_font: float = 11.0) -> None:
     """Set sane plotting defaults (no custom colors). Call once per notebook."""
     rc = mpl.rcParams
@@ -40,6 +54,7 @@ def use_mpl_defaults(dpi: int = 150, base_font: float = 11.0) -> None:
 
     rc["lines.linewidth"] = 1.25
 
+# %%
 def format_date_axis(ax: mpl.axes.Axes | None = None) -> mpl.axes.Axes:
     """Apply concise date formatting to the x-axis of a time series plot."""
     ax = ax or plt.gca()

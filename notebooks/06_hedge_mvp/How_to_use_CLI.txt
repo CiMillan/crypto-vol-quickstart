@@ -1,0 +1,9 @@
+How to use (CLI)
+
+From your repo root:
+
+make deps        # installs packages into .venv (and notebook)
+make kernel      # registers kernel "crypto-vol (.venv)" for Jupyter
+make nb          # opens classic Jupyter Notebook (or: make nb-nosrc)
+
+Once Notebook opens, pick kernel “crypto-vol (.venv)”

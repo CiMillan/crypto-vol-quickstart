@@ -1,9 +1,23 @@
+# ---
+# jupyter:
+#   jupytext:
+#     cell_metadata_filter: -all
+#     notebook_metadata_filter: jupytext,text_representation,kernelspec
+#     text_representation:
+#       extension: .py
+#       format_name: percent
+#       format_version: '1.3'
+#       jupytext_version: 1.16.2
+# ---
+
+# %%
 import argparse
 import pandas as pd
 import numpy as np
 from dateutil.relativedelta import relativedelta
 from ..utils.io import read_parquet, write_parquet
 
+# %%
 def resample_ohlc(df, rule='5T'):
     o = df['open'].resample(rule).first()
     h = df['high'].resample(rule).max()
@@ -13,9 +27,11 @@ def resample_ohlc(df, rule='5T'):
     out = pd.concat({'open':o,'high':h,'low':l,'close':c,'volume':v}, axis=1).dropna()
     return out
 
+# %%
 def realized_vol(returns, window):
     return returns.rolling(window).std() * np.sqrt(returns.freq.n / pd.Timedelta('1D'))
 
+# %%
 def make_basic_features(ohlc):
     ohlc = ohlc.copy()
     ohlc['ret_1'] = np.log(ohlc['close']).diff()
@@ -27,6 +43,7 @@ def make_basic_features(ohlc):
     ohlc['ema_20'] = ohlc['close'].ewm(span=20, adjust=False).mean()
     return ohlc
 
+# %%
 def ta_rsi(close, period=14):
     delta = close.diff()
     up = delta.clip(lower=0)
@@ -37,12 +54,14 @@ def ta_rsi(close, period=14):
     rsi = 100 - (100 / (1 + rs))
     return rsi
 
+# %%
 def align_funding(features, funding):
     # Funding is ~8-hour cadence; forward-fill to bar frequency
     funding = funding.reindex(features.index).ffill()
     features = features.join(funding, how='left')
     return features
 
+# %%
 def add_target(features, horizon=12):
     # Target: next-horizon realized volatility (sum of future returns std)
     ret1 = features['ret_1']
@@ -51,6 +70,7 @@ def add_target(features, horizon=12):
     features['target_rv'] = target
     return features
 
+# %%
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--spot', required=True)
@@ -75,5 +95,6 @@ def main():
     write_parquet(feat, args.out)
     print(f'Features written: {args.out}, rows={len(feat):,}')
 
+# %%
 if __name__ == '__main__':
     main()

@@ -9,16 +9,3 @@
 #       format_version: '1.3'
 #       jupytext_version: 1.16.2
 # ---
-
-# %%
-import pandas as pd
-from pathlib import Path
-
-# %%
-def write_parquet(df: pd.DataFrame, path: str):
-    Path(path).parent.mkdir(parents=True, exist_ok=True)
-    df.to_parquet(path, index=True)
-
-# %%
-def read_parquet(path: str) -> pd.DataFrame:
-    return pd.read_parquet(path)
