@@ -18,3 +18,4 @@ black
 isort
 flake8
 jupytext==1.16.2
+pyarrow==12.0.1
