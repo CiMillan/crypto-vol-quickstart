@@ -34,7 +34,9 @@ python -m src.hedge_mvp.run \
   --timeframe 1h \
   --fees_bps 1 \
   --out runs/BTCUSDT/hedge_mvp
-Don’t have perps handy? Omit --perp to run spot+funding only.
+```
+
+> Don’t have perps handy? Omit --perp to run spot+funding only.
 
 Notes & QA
 Use real perp returns (no proxies) for final results.
