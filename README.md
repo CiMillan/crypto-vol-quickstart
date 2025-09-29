@@ -65,6 +65,8 @@ python -m src.hedge_mvp.run \
   --timeframe 1h --fees_bps 1 --out runs/BTCUSDT/hedge_mvp
 ```
 
+---
+
 ## 7) Repository layout
 
 ```bash
@@ -77,6 +79,8 @@ crypto-vol-quickstart/
 └── docs/                   # split README sections (0–4)
 ```
 
+---
+
 ## 8) Notes
 
 - Public endpoints only; no API keys required for the base pipeline.
@@ -85,6 +89,10 @@ crypto-vol-quickstart/
 
 - Extend src/features/make_features.py to integrate on-chain once your Dune/BigQuery exports are ready.
 
-### Maintainer
+---
+
+## Maintainer
+
 Built by Cíntia Millan — Data Scientist & PhD Candidate (NOVA IMS).
+
 Focus: robust ML for crypto volatility forecasting, hedging, and economic validation.
