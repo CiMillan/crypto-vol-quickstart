@@ -1,6 +1,7 @@
 # Crypto Volatility Forecasting — Quickstart
 
 **Production-grade scaffold** to **download market data**, **engineer features**, **train & compare models** (GARCH, XGBoost, LSTM, CNN-LSTM), and **backtest** a volatility-targeting strategy with walk-forward validation.  
+
 *Focus assets:* BTCUSDT, ETHUSDT (spot + perp) · *Exchange:* Binance (public endpoints via CCXT + REST)
 
 ---
@@ -62,9 +63,11 @@ python -m src.hedge_mvp.run \
   --perp data/raw/binance_perp_BTCUSDT_5m.parquet \
   --funding data/raw/binance_funding_BTCUSDT.parquet \
   --timeframe 1h --fees_bps 1 --out runs/BTCUSDT/hedge_mvp
-7) Repository layout
-bash
-Copy code
+```
+
+## 7) Repository layout
+
+```bash
 crypto-vol-quickstart/
 ├── data/raw/               # raw downloads
 ├── data/processed/         # aligned features/targets (+ on-chain docs)
@@ -72,13 +75,16 @@ crypto-vol-quickstart/
 ├── notebooks/              # EDA & hedge notebooks (paired .py via jupytext)
 ├── src/                    # Python modules (data, features, modeling, backtest, hedge_mvp)
 └── docs/                   # split README sections (0–4)
-8) Notes
-Public endpoints only; no API keys required for the base pipeline.
+```
 
-Exchange can be swapped (CCXT). Paths/symbols are configurable via CLI.
+## 8) Notes
 
-Extend src/features/make_features.py to integrate on-chain once your Dune/BigQuery exports are ready.
+- Public endpoints only; no API keys required for the base pipeline.
 
-9) Maintainer
+- Exchange can be swapped (CCXT). Paths/symbols are configurable via CLI.
+
+- Extend src/features/make_features.py to integrate on-chain once your Dune/BigQuery exports are ready.
+
+### Maintainer
 Built by Cíntia Millan — Data Scientist & PhD Candidate (NOVA IMS).
 Focus: robust ML for crypto volatility forecasting, hedging, and economic validation.
