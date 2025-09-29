@@ -68,3 +68,5 @@ notebooks/**/.ipynb_checkpoints/
 # local hedge files
 hedge_trading.ipynb
 hedge_trading.py
+notebooks/06_hedge_mvp/hedge_trading.ipynb
+notebooks/06_hedge_mvp/hedge_trading.py
