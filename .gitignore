@@ -74,3 +74,6 @@ notebooks/06_hedge_mvp/hedge_trading.py
 # local cache & run outputs
 notebooks/06_hedge_mvp/.mpl/
 **/runs/
+
+# local mpl cache
+notebooks/06_hedge_mvp/.mpl/
