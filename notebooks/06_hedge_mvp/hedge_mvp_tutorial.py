@@ -1197,6 +1197,81 @@ if HAS_XGB:
 # - Plots PNG (already displayed above)
 # - Funding snapshot (if any)
 
+# %% [markdown]
+# ### 🗂️ Cell 10 — **Save Artifacts to Disk** (reproducibility & audit trail)
+#
+# This cell **packages all results** from the tutorial run into files inside **OUTDIR** so you can **reproduce**, **share**, and **audit** later. Think of it as creating a **run folder** with everything needed to review the analysis.
+#
+# #### 1) **Prices (CSV)**
+#
+# *   We save the aligned **Spot Close** and **Perp Close** into **prices.csv**.
+#     
+# *   Purpose: a **clean reference** for any future checks (e.g., “what prices did we use?”).
+#     
+# *   Columns typically include: **spot\_close**, **perp\_close**, indexed by **UTC timestamps**.
+#     
+#
+# #### 2) **Returns (CSV)**
+#
+# *   We save **log returns** into **returns.csv**:
+#     
+#     *   **r\_spot** — spot log-returns
+#         
+#     *   **r\_hedged** — hedged log-returns (using the current β or **scaled β** if you enabled ML scaling)
+#         
+# *   Purpose: lets others **re-run plots/stats** or test **alternative metrics** without fetching raw prices again.
+#     
+#
+# #### 3) **Metrics (JSON)**
+#
+# *   We write a compact **metrics.json** with the key numbers from the backtest:
+#     
+#     *   **timeframe** — bar frequency (e.g., **1h**)
+#         
+#     *   **samples** — number of observations used
+#         
+#     *   **hedge\_ratio** — OLS β (static hedge ratio)
+#         
+#     *   **scaled\_beta** — final **β** after any **volatility-based scaling** (if applied)
+#         
+#     *   **variance\_spot**, **variance\_hedged** — per-period variances of unhedged vs hedged returns
+#         
+#     *   **variance\_reduction** — **1 − Var(hedged)/Var(spot)** (how much risk we removed)
+#         
+#     *   **sharpe\_spot**, **sharpe\_hedged** — risk-adjusted returns (annualized using the inferred periods/year)
+#         
+#     *   **maxdd\_spot**, **maxdd\_hedged** — **Max Drawdown** (worst peak-to-trough loss) for spot vs hedged
+#         
+# *   Purpose: a **machine-readable summary** for dashboards, scripts, or quick comparisons across runs.
+#     
+#
+# #### 4) **Plots (PNG)**
+#
+# *   The cell above already **displayed** plots; they are also **saved** in the run folder (e.g., price overlays, cumulative returns, scaling curve if applicable).
+#     
+# *   Purpose: **visual audit** of behavior and regime shifts without re-executing the notebook.
+#     
+#
+# #### 5) **Funding snapshot (optional, CSV)**
+#
+# *   If **funding data** was available, we save **funding\_rates.csv**.
+#     
+# *   Purpose: later you can compute **funding-adjusted** performance or analyze **funding regimes**.
+#     
+#
+# #### 6) **Final confirmation**
+#
+# *   The notebook prints **“Saved artifacts to: …”** showing the **absolute path** of the run folder (timestamped), so you can quickly **open, zip, or share** it.
+#     
+#
+# #### Why this matters (plain English)
+#
+# *   **Reproducibility:** others can **verify** and **replicate** results without access to your live APIs.
+#     
+# *   **Traceability:** every run has its own **timestamped folder**, preventing mix-ups.
+#     
+# *   **Portability:** CSV/JSON/PNG are **universal formats** that work with Excel, Python/R, BI tools, or simple file viewers.
+
 # %%
 # Prices
 pd.DataFrame({"spot_close": spot_close, "perp_close": perp_close}).to_csv(os.path.join(OUTDIR, "prices.csv"))
@@ -1225,3 +1300,127 @@ print("Saved artifacts to:", OUTDIR)
 # - Use `make hedge-paper` for a **dry-run rebalancer** that logs intended hedge ratios per cycle.
 # - Later: wire **testnet orders** (USD-M perps) with strict guardrails (min notional, leverage caps, kill-switch).
 # - For the PhD: expand ML pipeline (XGBoost baseline → HAR-RV/MIDAS → LSTM/Transformer), add **regime filters**, and run **Diebold–Mariano** tests.
+
+# %% [markdown]
+# ### 🧭 Cell 11 — **Where to go next** (from tutorial → practice → research)
+#
+# This cell outlines **practical next steps**: first a **paper-trading dry run**, then a **safe testnet prototype** with guardrails, and finally a **research roadmap** that turns this tutorial into a **PhD-grade study**.
+#
+# #### 1) **Dry-run rebalancer** — make hedge-paper
+#
+# *   **What it does:** runs a **paper (simulation) rebalancer** that _does not place orders_. Each cycle it **reads prices**, computes your **hedge ratio (β)** (or **scaled β**), and **logs** the **intended position change** and expected **hedged return**.
+#     
+# *   **Why it matters:** lets you verify **logic, timing, and data quality** without market risk. You get a **timeline of planned actions** you can compare against actual market moves (PnL, variance reduction, drawdowns).
+#     
+# *   **What to look for in the logs:**
+#     
+#     *   **Timestamp alignment (UTC)** and **cycle cadence** (e.g., hourly).
+#         
+#     *   **Intended hedge size** vs. **position drift** (is the hedge tight enough?).
+#         
+#     *   **Performance metrics trend** (variance reduction, Sharpe, MDD) over time.
+#         
+#     *   **Sensitivity** to **fees** and **funding** assumptions.
+#         
+#
+# #### 2) **Safe exchange prototype** — USD-M perps on **testnet** with **strict guardrails**
+#
+# *   **Testnet only (first):** connects to the exchange’s **sandbox environment** so you can place **fake trades** with **real APIs**.
+#     
+# *   **Guardrails to implement (non-negotiable):**
+#     
+#     *   **Min notional checks:** never send orders below the exchange **minimum size** (prevents rejects & spam).
+#         
+#     *   **Leverage caps:** hard limits on **max leverage** and **max notional** to avoid accidental oversizing.
+#         
+#     *   **Kill-switch:** a single toggle/env var that **halts trading**, **cancels open orders**, and **flattens positions**.
+#         
+#     *   **Rate-limit & retry policy:** respect exchange **API limits**; **exponential backoff** on transient errors.
+#         
+#     *   **State checks before/after:** verify **wallet balance**, **position size**, and **margin** pre/post order.
+#         
+#     *   **Durable logging:** structured logs (JSON) and **on-disk snapshots** of state, so you can audit every cycle.
+#         
+# *   **Success criteria for “graduating” from testnet:**
+#     
+#     *   2+ weeks of **error-free cycles**;
+#         
+#     *   **Stable metrics** similar to paper run;
+#         
+#     *   **No guardrail triggers** except in simulated incident tests;
+#         
+#     *   **Clear funding & fee accounting** per cycle.
+#         
+#
+# #### 3) **PhD research roadmap** — from baseline to SOTA
+#
+# *   **Start (baseline already built):** **OLS β** + optional **XGBoost** for **volatility-aware scaling**.
+#     
+# *   **Classical volatility models (add):**
+#     
+#     *   **HAR-RV** (Heterogeneous AutoRegressive Realized Volatility): predicts vol using **multi-horizon realized vols** (e.g., daily/weekly/monthly).
+#         
+#     *   **MIDAS** (Mixed Data Sampling): **combines high-frequency info** with lower-frequency drivers (macro/flows) via **lag-weighting kernels**.
+#         
+# *   **Deep learning baselines (progressive):**
+#     
+#     *   **LSTM**: sequence model for **vol clustering & regime persistence**.
+#         
+#     *   **Transformer**: longer context, potential to capture **non-local dependencies** and **regime shifts**.
+#         
+# *   **Regime filters (overlay):** define simple regimes to **gate** or **scale** the hedge:
+#     
+#     *   **Volatility quantiles** (calm vs turbulent),
+#         
+#     *   **Funding sign/magnitude** (carry positive vs negative),
+#         
+#     *   **Trend proxies** or **market microstructure signals**.Combine: **only hedge aggressively** when both **vol is high** _and_ **funding is not punitive**.
+#         
+# *   **Forecast evaluation (out-of-sample):**
+#     
+#     *   **Walk-forward** or **rolling windows**;
+#         
+#     *   Loss functions for vol forecasts: **MSE of σ̂**, **QLIKE**, **MAE**;
+#         
+#     *   **Diebold–Mariano tests** to compare forecast accuracy **statistically** across models and horizons.
+#         
+# *   **Reporting:** ablations (with/without funding, static vs scaled β, different timeframes), **error bars**, and **robustness** (different coins/exchanges).
+#     
+#
+# #### 4) **Deliverables checklist** (what to produce next)
+#
+# *   **Paper run outputs:** a folder with **intended trades log**, **cycle metrics**, and **plots** of **cumulative hedged returns**.
+#     
+# *   **Testnet report:** incident log (if any), **guardrail triggers**, per-cycle **fees & funding**, and **PnL vs. spot**.
+#     
+# *   **Model cards:** one-pager per model (HAR-RV, MIDAS, LSTM, Transformer) with **features**, **training window**, **metrics**, and **limitations**.
+#     
+# *   **Evaluation appendix:** **Diebold–Mariano** tables, **QLIKE/MSE** comparisons, and **regime-wise performance** (e.g., high-vol vs low-vol).
+#     
+# *   **Repro pack:** runs/ snapshots, metrics.json, and a **README** describing how to re-run all experiments.
+#     
+#
+# #### 5) **Plain-English definitions (quick glossary)**
+#
+# *   **USD-M perps:** USDT-margined perpetual futures (no expiry, settled in USDT).
+#     
+# *   **Min notional:** the **smallest order size** the exchange accepts.
+#     
+# *   **Leverage cap:** a **hard upper bound** on leverage/margin to limit liquidation risk.
+#     
+# *   **Kill-switch:** an **emergency off** that **stops trading** and **flattens** the position immediately.
+#     
+# *   **HAR-RV / MIDAS:** classic **econometric vol models** using multi-horizon variance and mixed-frequency data.
+#     
+# *   **Diebold–Mariano test:** a **statistical test** that checks whether one forecast is **significantly more accurate** than another.
+#     
+#
+# #### Takeaway
+#
+# *   Move from **tutorial** → **paper trading** → **testnet with guardrails** before any real orders.
+#     
+# *   For the PhD track, elevate the pipeline with **strong baselines**, **regime logic**, and **formal forecast comparison** (DM tests).
+#     
+# *   The goal: a hedge that is **statistically sound**, **economically aware** (fees & funding), and **operationally safe**.
+
+# %%

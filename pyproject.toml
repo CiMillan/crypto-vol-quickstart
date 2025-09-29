@@ -1,4 +1,8 @@
 [project]
+dependencies = [
+  "pyarrow==12.0.1",
+]
+
 name = "crypto-vol-quickstart"
 version = "0.1.0"
 

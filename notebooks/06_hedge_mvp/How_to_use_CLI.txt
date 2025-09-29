@@ -7,3 +7,11 @@ make kernel      # registers kernel "crypto-vol (.venv)" for Jupyter
 make nb          # opens classic Jupyter Notebook (or: make nb-nosrc)
 
 Once Notebook opens, pick kernel “crypto-vol (.venv)”	
+
+
+	
+For same jn logic:
+
+“Apply the hedge_mvp narration to this new notebook.”
+
+“Give me the per-cell explanations like last time (Markdown + LaTeX).”
