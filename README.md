@@ -76,48 +76,11 @@ Computes Sharpe, Sortino, MDD, turnover, and regime-sliced results (k-means on v
 
 ## 5) Hedge MVP — Spot↔Perp hedge with funding
 
-*   Notebook/script:
-    
-    *   `notebooks/06_hedge_mvp/hedge_MVP.ipynb`
-        
-    *   `notebooks/06_hedge_mvp/hedge_MVP.py` (paired by jupytext)
-        
-*   What it does:
-    
-    *   Loads **spot**, **funding**, and (optionally) **perp** prices
-        
-    *   Resamples to **1h**, computes r_spot, r_fut
-        
-    *   Merges **funding** (8h → per-hour)
-        
-    *   Estimates **OLS β** (static & rolling) and **vol-scaled β**
-        
-    *   Computes **hedged returns** with **fees & funding**
-        
-    *   Writes artifacts under `runs/BTCUSDT/hedge_mvp/<timestamp>/`:
-        
-        *   `spot_snapshot.csv`, `perp_snapshot.csv`, `funding_snapshot.csv`
-            
-        *   `prices_merged.csv`, `beta_series.csv`, `returns_decomposed.csv`
-            
-        *   `metrics.json` (variance reduction, Sharpe, MDD, turnover)
-            
-        *   Plots: `cumlogret.png`, `rolling_vol.png`, `beta_vs_funding.png`, `variance_components.png`
-            
-        *   `paper_rebalance_log.jsonl` (per-bar audit trail)
-            
-*   Outcomes from a sample run:
-    
-    *   **Variance reduction** ~ **92%** at 1h
-        
-    *   **Sharpe** improves (hedged ≥ unhedged)
-        
-    *   **MDD** compressed from ~−32% to ~−8%
-        
-    *   **Low turnover** (tiny fee drag), funding correctly signed
+> **Hedge MVP docs:** See the **[Spot↔Perp Hedge with Funding (README)](notebooks/06_hedge_mvp/README.md)** for full usage, outputs, and QA notes.
 
+## 6) On-chain features:
 
-## 6) > **On-chain features:** See the **[MV On-Chain Data Dictionary](data/processed/onchain/README.md)** for schema and QA checks.
+> See the **[MV On-Chain Data Dictionary](data/processed/onchain/README.md)** for schema and QA checks.
 
 
 ## 7) Project structure
