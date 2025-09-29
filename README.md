@@ -115,9 +115,12 @@ Computes Sharpe, Sortino, MDD, turnover, and regime-sliced results (k-means on v
     *   **MDD** compressed from ~−32% to ~−8%
         
     *   **Low turnover** (tiny fee drag), funding correctly signed
-        
 
-## 5) Project structure
+
+> **On-chain features:** See the **[MV On-Chain Data Dictionary](data/processed/onchain/README.md)** for schema and QA checks.
+
+
+## 6) Project structure
 
 ```
 crypto-vol-quickstart/
