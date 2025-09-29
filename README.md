@@ -93,6 +93,6 @@ crypto-vol-quickstart/
 
 ## Maintainer
 
-Built by Cíntia Millan — Data Scientist & PhD Candidate (NOVA IMS).
+Built by Cintia Millan — Data Scientist & PhD Candidate (NOVA IMS).
 
 Focus: robust ML for crypto volatility forecasting, hedging, and economic validation.
