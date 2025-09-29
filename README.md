@@ -78,15 +78,15 @@ Computes Sharpe, Sortino, MDD, turnover, and regime-sliced results (k-means on v
 
 *   Notebook/script:
     
-    *   `notebooks/06\_hedge\_mvp/hedge\_MVP.ipynb`
+    *   `notebooks/06_hedge_mvp/hedge_MVP.ipynb`
         
-    *   `notebooks/06\_hedge\_mvp/hedge\_MVP.py` (paired by jupytext)
+    *   `notebooks/06_hedge_mvp/hedge_MVP.py` (paired by jupytext)
         
 *   What it does:
     
     *   Loads **spot**, **funding**, and (optionally) **perp** prices
         
-    *   Resamples to **1h**, computes r\_spot, r\_fut
+    *   Resamples to **1h**, computes r_spot, r_fut
         
     *   Merges **funding** (8h → per-hour)
         
@@ -94,17 +94,17 @@ Computes Sharpe, Sortino, MDD, turnover, and regime-sliced results (k-means on v
         
     *   Computes **hedged returns** with **fees & funding**
         
-    *   Writes artifacts under `runs/BTCUSDT/hedge\_mvp/<timestamp>/`:
+    *   Writes artifacts under `runs/BTCUSDT/hedge_mvp/<timestamp>/`:
         
-        *   `spot\_snapshot.csv`, `perp\_snapshot.csv`, `funding\_snapshot.csv`
+        *   `spot_snapshot.csv`, `perp_snapshot.csv`, `funding_snapshot.csv`
             
-        *   `prices\_merged.csv`, `beta\_series.csv`, `returns\_decomposed.csv`
+        *   `prices_merged.csv`, `beta_series.csv`, `returns_decomposed.csv`
             
         *   `metrics.json` (variance reduction, Sharpe, MDD, turnover)
             
-        *   Plots: `cumlogret.png`, `rolling\_vol.png`, `beta\_vs\_funding.png`, `variance\_components.png`
+        *   Plots: `cumlogret.png`, `rolling_vol.png`, `beta_vs_funding.png`, `variance_components.png`
             
-        *   `paper\_rebalance\_log.jsonl` (per-bar audit trail)
+        *   `paper_rebalance_log.jsonl` (per-bar audit trail)
             
 *   Outcomes from a sample run:
     
