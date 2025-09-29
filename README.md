@@ -117,10 +117,10 @@ Computes Sharpe, Sortino, MDD, turnover, and regime-sliced results (k-means on v
     *   **Low turnover** (tiny fee drag), funding correctly signed
 
 
-> **On-chain features:** See the **[MV On-Chain Data Dictionary](data/processed/onchain/README.md)** for schema and QA checks.
+## 6) > **On-chain features:** See the **[MV On-Chain Data Dictionary](data/processed/onchain/README.md)** for schema and QA checks.
 
 
-## 6) Project structure
+## 7) Project structure
 
 ```
 crypto-vol-quickstart/
