@@ -38,20 +38,19 @@ python -m src.hedge_mvp.run \
 
 > Don’t have perps handy? Omit --perp to run spot+funding only.
 
-Notes & QA
+## Notes & QA
 Use real perp returns (no proxies) for final results.
 
-Funding alignment: 8h prints → allocate evenly across the next 8 hourly bars.
+- Funding alignment: 8h prints → allocate evenly across the next 8 hourly bars.
 
-β estimation: report both static OLS and rolling OLS; log any NaN windows.
+- β estimation: report both static OLS and rolling OLS; log any NaN windows.
 
-Fees: apply on rebalance trades only; log turnover.
+- Fees: apply on rebalance trades only; log turnover.
 
-Repro: every run writes a timestamped folder under runs/….
+- Repro: every run writes a timestamped folder under runs/….
 
-Makefile (optional)
-makefile
-Copy code
+## Makefile (optional)
+```bash
 .PHONY: hedge-mvp
 hedge-mvp:
 \t@python -m src.hedge_mvp.run \\
@@ -61,3 +60,4 @@ hedge-mvp:
 \t  --timeframe 1h \\
 \t  --fees_bps 1 \\
 \t  --out runs/BTCUSDT/hedge_mvp
+```
