@@ -6,74 +6,19 @@ A minimal, end-to-end scaffold to **download data**, **build features**, **train
 
 ## 0) Setup
 
-```bash
-python -m venv .venv && source .venv/bin/activate
-python -m pip install --upgrade pip
-pip install -r requirements.txt
-```
-> This repo uses a pre-commit hook with jupytext to keep ```.ipynb``` and paired ```.py``` files in sync.
-
+> See **[Setup](docs/00_setup.md)**.
 ## 1) Download data
 
-- Spot OHLCV via CCXT (Binance) — 1m (later resampled to 5m/1h)
-- Perp funding rates via Binance public endpoint
-- (Optional) Perp klines via CCXT if available
-
-```bash
-# BTC & ETH spot (1m)
-python -m src.data.ccxt_download --symbol BTC/USDT --timeframe 1m --since 2020-01-01 --limit 1000 --out data/raw/binance_spot_BTCUSDT_1m.parquet
-python -m src.data.ccxt_download --symbol ETH/USDT --timeframe 1m --since 2020-01-01 --limit 1000 --out data/raw/binance_spot_ETHUSDT_1m.parquet
-
-# Funding (8h prints)
-python -m src.data.binance_funding --symbol BTCUSDT --start 2020-01-01 --end 2025-09-19 --out data/raw/binance_funding_BTCUSDT.parquet
-python -m src.data.binance_funding --symbol ETHUSDT --start 2020-01-01 --end 2025-09-19 --out data/raw/binance_funding_ETHUSDT.parquet
-```
-> If you also want perp candles, add a CLI for BTC/USDT perps (naming convention in your repo is `binance_perp_..._5m.parquet`). Make sure the symbol is correct (avoid `BTCUSDTUSDT` typos).
-
+> See **[Download data](docs/01_download_data.md)**.
 ## 2) Build feature sets & targets
 
-```bash
-python -m src.features.make_features \
-  --spot data/raw/binance_spot_BTCUSDT_1m.parquet \
-  --funding data/raw/binance_funding_BTCUSDT.parquet \
-  --symbol BTCUSDT \
-  --timeframe 5m \
-  --out data/processed/BTCUSDT_5m.parquet
-
-python -m src.features.make_features \
-  --spot data/raw/binance_spot_ETHUSDT_1m.parquet \
-  --funding data/raw/binance_funding_ETHUSDT.parquet \
-  --symbol ETHUSDT \
-  --timeframe 5m \
-  --out data/processed/ETHUSDT_5m.parquet
-```
-
-Produces features (returns, realized vol, rolling stats, RSI, funding rates aligned) and **targets**: next-horizon realized volatility.
-
+> See **[Build feature sets & targets](docs/02_build_features_targets.md)**.
 ## 3) Walk-forward training & model comparison
 
-```bash
-python -m src.modeling.run_experiments \
-  --data data/processed/BTCUSDT_5m.parquet --symbol BTCUSDT --horizon 12 --output runs/BTCUSDT
-
-python -m src.modeling.run_experiments \
-  --data data/processed/ETHUSDT_5m.parquet --symbol ETHUSDT --horizon 12 --output runs/ETHUSDT
-```
-
-Models compared: **GARCH(1,1)** (ARCH package), **XGBoost**, **LSTM**. Metrics: MASE, RMSE, R2. Includes **Diebold–Mariano** tests and **feature importance** (XGB).
-
+> See **[Walk-forward training & model comparison](docs/03_walkforward_modeling.md)**.
 ## 4) Backtest — volatility targeting
 
-```bash
-python -m src.backtest.vol_targeting \
-  --pred runs/BTCUSDT/predictions.parquet \
-  --retcol ret_5m \
-  --fee_bps 1 \
-  --output runs/BTCUSDT/backtest_BTCUSDT.json
-```
-
-Computes Sharpe, Sortino, MDD, turnover, and regime-sliced results (k-means on vol regime).
-
+> See **[Backtest — volatility targeting](docs/04_backtest_vol_targeting.md)**.
 ## 5) Hedge MVP — Spot↔Perp hedge with funding
 
 > **Hedge MVP docs:** See the **[Spot↔Perp Hedge with Funding (README)](notebooks/06_hedge_mvp/README.md)** for full usage, outputs, and QA notes.
