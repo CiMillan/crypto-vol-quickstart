@@ -21,8 +21,8 @@
 - **2) Build feature sets & targets** → See **[Build feature sets & targets](docs/02_build_features_targets.md)**  
 - **3) Walk-forward training & model comparison** → See **[Walk-forward training & model comparison](docs/03_walkforward_modeling.md)**  
 - **4) Backtest — volatility targeting** → See **[Backtest — volatility targeting](docs/04_backtest_vol_targeting.md)**  
-- **5) Hedge MVP — Spot↔Perp hedge with funding** → See **[Hedge MVP README](notebooks/06_hedge_mvp/README.md)**  
-- **6) On-chain features** → See **[MV On-Chain Data Dictionary](data/processed/onchain/README.md)**
+- **5) Hedge MVP — Spot↔Perp hedge with funding** → See **[Hedge MVP — Spot↔Perp hedge with funding](notebooks/06_hedge_mvp/README.md)**  
+- **6) On-chain features** → See **[On-Chain Data Dictionary](data/processed/onchain/README.md)**
 
 ---
 
