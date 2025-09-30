@@ -50,3 +50,57 @@ which-jupyter:
 	@$(PY) -c "import sys; print('python', sys.version)"
 	@$(PY) -c "import jupyterlab; print('jupyterlab', jupyterlab.__version__)"
 	@$(PY) -c "import notebook; print('notebook', notebook.__version__)"
+
+# ---- On-chain MV features (robust; skips missing inputs) ----
+.PHONY: onchain-mv
+START ?= 2023-01-01
+END   ?= 2025-01-01
+OUT   ?= data/processed/onchain/mv_feature_set_hourly.parquet
+
+onchain-mv:
+	@python scripts/build_onchain_mv.py --start '$(START)' --end '$(END)' --out '$(OUT)'
+
+
+# ---------- Dune → Parquet exports ----------
+DUNE_START ?= 2023-01-01
+DUNE_END   ?= 2025-01-01
+PERF       ?= large
+
+# Fill these with your saved query IDs from Dune
+QID_TRANSFERS      ?= 5876393
+QID_UNI_SWAPS      ?= 5876396
+QID_ETH_BLOCKS     ?= 5876400
+QID_FIRST_SEEN     ?= 5876406
+
+.PHONY: dune-transfers dune-swaps dune-blocks dune-first-seen dune-onchain-all
+
+dune-transfers:
+	@python scripts/dune_to_parquet.py \
+	  --query-id $(QID_TRANSFERS) \
+	  --out data/processed/onchain/transfers.parquet \
+	  --param start=$(DUNE_START) --param end=$(DUNE_END) \
+	  --performance $(PERF)
+
+dune-swaps:
+	@python scripts/dune_to_parquet.py \
+	  --query-id $(QID_UNI_SWAPS) \
+	  --out data/processed/onchain/uniswap_swaps.parquet \
+	  --param start=$(DUNE_START) --param end=$(DUNE_END) \
+	  --performance $(PERF)
+
+dune-blocks:
+	@python scripts/dune_to_parquet.py \
+	  --query-id $(QID_ETH_BLOCKS) \
+	  --out data/processed/onchain/eth_blocks.parquet \
+	  --param start=$(DUNE_START) --param end=$(DUNE_END) \
+	  --performance $(PERF)
+
+dune-first-seen:
+	@python scripts/dune_to_parquet.py \
+	  --query-id $(QID_FIRST_SEEN) \
+	  --out data/processed/onchain/address_first_seen.parquet \
+	  --param start=$(DUNE_START) --param end=$(DUNE_END) \
+	  --performance $(PERF)
+
+# Fetch all four in one go
+dune-onchain-all: dune-transfers dune-swaps dune-blocks dune-first-seen
