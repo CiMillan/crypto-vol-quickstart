@@ -104,3 +104,24 @@ dune-first-seen:
 
 # Fetch all four in one go
 dune-onchain-all: dune-transfers dune-swaps dune-blocks dune-first-seen
+
+## === On-Chain Queries ===
+.PHONY: onchain-tree onchain-queries onchain-readme onchain-commit
+
+# Show where queries live
+onchain-tree:
+	@echo "analytics/onchain/queries:"
+	@find analytics/onchain/queries -maxdepth 1 -type f -name "*.sql" -print
+
+# Ensure queries exist (no-op here since files are versioned)
+onchain-queries: onchain-tree
+	@echo "Queries are managed in git under analytics/onchain/queries/"
+
+# Re-append the README appendix if missing (guarded by marker)
+onchain-readme:
+	@grep -q "<!-- ONCHAIN-APPENDIX:BEGIN -->" README.md && echo "Appendix present ✅" || (echo "Appendix missing, re-run the CLI block from ChatGPT to append it." && exit 1)
+
+# Commit just the on-chain assets
+onchain-commit:
+	git add analytics/onchain/queries README.md Makefile
+	git commit -m "Add on-chain queries (transfers, transfers_cex_flags, uniswap_swaps, eth_blocks, address_first) + README appendix + Makefile targets" || echo "Nothing to commit"
