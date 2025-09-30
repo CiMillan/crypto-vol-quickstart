@@ -1,0 +1,20 @@
+# Each job points to an .sql under analytics/onchain/queries
+# name: identifier used by Make targets
+# outfile: where parquet will be saved (under --outdir)
+# params: optional per-job overrides
+jobs:
+  - name: transfers
+    sql: analytics/onchain/queries/transfers.sql
+    outfile: transfers.parquet
+  - name: transfers_cex_flags
+    sql: analytics/onchain/queries/transfers_cex_flags.sql
+    outfile: transfers_cex_flags.parquet
+  - name: uniswap_swaps
+    sql: analytics/onchain/queries/uniswap_swaps.sql
+    outfile: uniswap_swaps.parquet
+  - name: eth_blocks
+    sql: analytics/onchain/queries/eth_blocks.sql
+    outfile: eth_blocks.parquet
+  - name: address_first
+    sql: analytics/onchain/queries/address_first.sql
+    outfile: address_first.parquet

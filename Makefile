@@ -125,3 +125,32 @@ onchain-readme:
 onchain-commit:
 	git add analytics/onchain/queries README.md Makefile
 	git commit -m "Add on-chain queries (transfers, transfers_cex_flags, uniswap_swaps, eth_blocks, address_first) + README appendix + Makefile targets" || echo "Nothing to commit"
+
+## === Dune Exports ===
+.PHONY: dune-install dune-onchain-all dune-onchain-one dune-onchain-check dune-env
+
+# Ensure dependencies are installed
+dune-install:
+	@python -m pip install -r requirements.txt
+
+# Load .env if present (direnv recommended, but we fall back to dotenv-run)
+dune-env:
+	@if [ -f .env ]; then export $(shell sed -n 's/^\([^#][^=]*\)=.*$/\1/p' .env | xargs); fi; true
+
+# Run all jobs in analytics/onchain/config/onchain_jobs.yaml
+# Usage:
+#   make dune-onchain-all START=2025-09-01T00:00:00Z END=2025-09-02T00:00:00Z
+dune-onchain-all: dune-env
+	@echo "DUNE export (all jobs)"
+	@python -m src.onchain.dune_export --jobs analytics/onchain/config/onchain_jobs.yaml --outdir data/processed/onchain $(if $(START),--start $(START),) $(if $(END),--end $(END),)
+
+# Run a single job:
+#   make dune-onchain-one JOB=transfers START=... END=...
+dune-onchain-one: dune-env
+	@test -n "$(JOB)" || (echo "Set JOB=<name> (e.g., transfers)" && exit 2)
+	@python -m src.onchain.dune_export --jobs analytics/onchain/config/onchain_jobs.yaml --outdir data/processed/onchain --job $(JOB) $(if $(START),--start $(START),) $(if $(END),--end $(END),)
+
+# Quick YAML sanity
+dune-onchain-check:
+	@python -c "import yaml,sys;yaml.safe_load(open('analytics/onchain/config/onchain_jobs.yaml'));print('YAML OK ✅')"
+
