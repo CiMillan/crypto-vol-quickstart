@@ -135,7 +135,7 @@ dune-install:
 
 # Load .env if present (direnv recommended, but we fall back to dotenv-run)
 dune-env:
-	 -a; [ -f .env ] && . ./.env; set +a; true
+	@/bin/sh -c '[ -f .env ] && . ./.env; true'
 
 # Run all jobs in analytics/onchain/config/onchain_jobs.yaml
 # Usage:
