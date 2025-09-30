@@ -96,3 +96,17 @@ crypto-vol-quickstart/
 Built by Cintia Millan — Data Scientist & PhD Candidate (NOVA IMS).
 
 Focus: robust ML for crypto volatility forecasting, hedging, and economic validation.
+
+## Dune Export — On-Chain Data
+
+**Run all jobs (writes Parquet to `data/processed/onchain/`):**
+```bash
+# set your key once (or copy .env.example to .env)
+export DUNE_API_KEY=... 
+make dune-install
+make dune-onchain-all START=2025-09-01T00:00:00Z END=2025-09-02T00:00:00Z
+Run one job:
+
+bash
+Copy code
+make dune-onchain-one JOB=uniswap_swaps START=2025-09-01T00:00:00Z END=2025-09-02T00:00:00Z

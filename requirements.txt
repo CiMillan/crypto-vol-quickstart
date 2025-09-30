@@ -19,3 +19,5 @@ isort
 flake8
 jupytext==1.16.2
 pyarrow==12.0.1
+dune-client>=1.7.0
+PyYAML>=6.0
