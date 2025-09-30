@@ -104,7 +104,6 @@ dune-first-seen:
 
 # Fetch all four in one go
 dune-onchain-all: dune-transfers dune-swaps dune-blocks dune-first-seen
-
 ## === On-Chain Queries ===
 .PHONY: onchain-tree onchain-queries onchain-readme onchain-commit
 
@@ -127,30 +126,28 @@ onchain-commit:
 	git commit -m "Add on-chain queries (transfers, transfers_cex_flags, uniswap_swaps, eth_blocks, address_first) + README appendix + Makefile targets" || echo "Nothing to commit"
 
 ## === Dune Exports ===
-.PHONY: dune-install dune-onchain-all dune-onchain-one dune-onchain-check dune-env
+.NOTPARALLEL:
 
-# Ensure dependencies are installed
+.PHONY: dune-install dune-onchain-all dune-onchain-one dune-onchain-check dune-env
 dune-install:
 	@python -m pip install -r requirements.txt
 
-# Load .env if present (direnv recommended, but we fall back to dotenv-run)
+# Load .env if present (portable; no sed)
 dune-env:
 	@/bin/sh -c '[ -f .env ] && . ./.env; true'
 
-# Run all jobs in analytics/onchain/config/onchain_jobs.yaml
-# Usage:
-#   make dune-onchain-all START=2025-09-01T00:00:00Z END=2025-09-02T00:00:00Z
+# Run all jobs sequentially via saved query IDs (optional SLEEP between jobs)
+# Example:
+#   make dune-onchain-all START=2025-09-01T00:00:00Z END=2025-09-01T06:00:00Z SLEEP=2
 dune-onchain-all: dune-env
-	@echo "DUNE export (all jobs)"
-	@python -m src.onchain.dune_export --jobs analytics/onchain/config/onchain_jobs.yaml --outdir data/processed/onchain $(if $(START),--start $(START),) $(if $(END),--end $(END),)
+	@python -m src.onchain.dune_export --jobs analytics/onchain/config/onchain_jobs.yaml --outdir data/processed/onchain $(if $(START),--start $(START),) $(if $(END),--end $(END),) $(if $(SLEEP),--sleep $(SLEEP),)
 
 # Run a single job:
-#   make dune-onchain-one JOB=transfers START=... END=...
+#   make dune-onchain-one JOB=eth_blocks START=... END=...
 dune-onchain-one: dune-env
-	@test -n "$(JOB)" || (echo "Set JOB=<name> (e.g., transfers)" && exit 2)
+	@test -n "$(JOB)" || (echo "Set JOB=<name> (e.g., eth_blocks)" && exit 2)
 	@python -m src.onchain.dune_export --jobs analytics/onchain/config/onchain_jobs.yaml --outdir data/processed/onchain --job $(JOB) $(if $(START),--start $(START),) $(if $(END),--end $(END),)
 
-# Quick YAML sanity
+# YAML sanity
 dune-onchain-check:
-	@python -c "import yaml,sys;yaml.safe_load(open('analytics/onchain/config/onchain_jobs.yaml'));print('YAML OK ✅')"
-
+	@python -c "import yaml; yaml.safe_load(open('analytics/onchain/config/onchain_jobs.yaml')); print('YAML OK ✅')"
