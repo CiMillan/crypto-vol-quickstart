@@ -1,0 +1,47 @@
+# top-level editorconfig for crypto-vol-quickstart
+# helps everyone use the same whitespace, newlines, and indentation
+
+root = true
+
+[*]
+end_of_line = lf
+charset = utf-8
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 4
+
+# lightweight formats
+[*.{yml,yaml,json,toml}]
+indent_style = space
+indent_size = 2
+
+# Python
+[*.py]
+indent_style = space
+indent_size = 4
+
+# SQL (compact style)
+[*.sql]
+indent_style = space
+indent_size = 2
+
+# Shell & Make
+[*.sh]
+indent_style = space
+indent_size = 2
+
+[Makefile]
+indent_style = tab
+# keep trailing spaces on recipe lines (tabs matter)
+trim_trailing_whitespace = false
+
+# Markdown: keep double-space line breaks and long lines
+[*.md]
+trim_trailing_whitespace = false
+max_line_length = off
+
+# Notebooks & data artifacts: don't try to tweak whitespace/newlines
+[*.ipynb]
+insert_final_newline = false
+trim_trailing_whitespace = false
