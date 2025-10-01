@@ -125,3 +125,12 @@ dune-onchain-one: dune-env
 # YAML sanity
 dune-onchain-check:
 	@python -c "import yaml; yaml.safe_load(open('analytics/onchain/config/onchain_jobs.yaml')); print('YAML OK ✅')"
+.PHONY: qa-data
+qa-data:
+	@python -m scripts.qa_market_data \
+	  --spot data/raw/binance_spot_BTCUSDT_5m.parquet \
+	  --perp data/raw/binance_perp_BTCUSDT_5m.parquet \
+	  --funding data/raw/binance_funding_BTCUSDT.parquet \
+	  --timeframe 5min \
+	  --outdir runs/_qa
+	@echo "Open runs/_qa/dq_report.md"
