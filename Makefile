@@ -73,35 +73,6 @@ QID_ETH_BLOCKS     ?= 5876400
 QID_FIRST_SEEN     ?= 5876406
 
 .PHONY: dune-transfers dune-swaps dune-blocks dune-first-seen dune-onchain-all
-
-dune-transfers:
-	@python scripts/dune_to_parquet.py \
-	  --query-id $(QID_TRANSFERS) \
-	  --out data/processed/onchain/transfers.parquet \
-	  --param start=$(DUNE_START) --param end=$(DUNE_END) \
-	  --performance $(PERF)
-
-dune-swaps:
-	@python scripts/dune_to_parquet.py \
-	  --query-id $(QID_UNI_SWAPS) \
-	  --out data/processed/onchain/uniswap_swaps.parquet \
-	  --param start=$(DUNE_START) --param end=$(DUNE_END) \
-	  --performance $(PERF)
-
-dune-blocks:
-	@python scripts/dune_to_parquet.py \
-	  --query-id $(QID_ETH_BLOCKS) \
-	  --out data/processed/onchain/eth_blocks.parquet \
-	  --param start=$(DUNE_START) --param end=$(DUNE_END) \
-	  --performance $(PERF)
-
-dune-first-seen:
-	@python scripts/dune_to_parquet.py \
-	  --query-id $(QID_FIRST_SEEN) \
-	  --out data/processed/onchain/address_first_seen.parquet \
-	  --param start=$(DUNE_START) --param end=$(DUNE_END) \
-	  --performance $(PERF)
-
 # Fetch all four in one go
 dune-onchain-all: dune-transfers dune-swaps dune-blocks dune-first-seen
 ## === On-Chain Queries ===
@@ -132,18 +103,15 @@ onchain-commit:
 dune-install:
 	@python -m pip install -r requirements.txt
 
-# Load .env if present (portable; no sed)
+# Load .env if present
 dune-env:
 	@/bin/sh -c '[ -f .env ] && . ./.env; true'
 
 # Run all jobs sequentially via saved query IDs (optional SLEEP between jobs)
-# Example:
-#   make dune-onchain-all START=2025-09-01T00:00:00Z END=2025-09-01T06:00:00Z SLEEP=2
 dune-onchain-all: dune-env
 	@python -m src.onchain.dune_export --jobs analytics/onchain/config/onchain_jobs.yaml --outdir data/processed/onchain $(if $(START),--start $(START),) $(if $(END),--end $(END),) $(if $(SLEEP),--sleep $(SLEEP),)
 
-# Run a single job:
-#   make dune-onchain-one JOB=eth_blocks START=... END=...
+# Run a single job
 dune-onchain-one: dune-env
 	@test -n "$(JOB)" || (echo "Set JOB=<name> (e.g., eth_blocks)" && exit 2)
 	@python -m src.onchain.dune_export --jobs analytics/onchain/config/onchain_jobs.yaml --outdir data/processed/onchain --job $(JOB) $(if $(START),--start $(START),) $(if $(END),--end $(END),)

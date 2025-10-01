@@ -110,3 +110,7 @@ Run one job:
 bash
 Copy code
 make dune-onchain-one JOB=uniswap_swaps START=2025-09-01T00:00:00Z END=2025-09-02T00:00:00Z
+
+## Heads-up: Dune params & free tier
+- In Dune UI, each saved query must define **TEXT** params `start` and `end` (ISO8601).
+- For large tables (raw transfers), the free tier can return **402 Payment Required** even on narrow windows. Prefer **server-side aggregations** (hourly netflows, swap notional) and download the small result sets.

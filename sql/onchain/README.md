@@ -1,0 +1,1 @@
+> Put these files under `sql/onchain/`. They are Dune-ready templates with safe defaults and clear parameters. Adjust table names if your Dune workspace uses different schemas. Each file documents any schema variations.

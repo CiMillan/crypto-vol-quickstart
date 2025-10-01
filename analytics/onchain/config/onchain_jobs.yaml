@@ -1,16 +1,44 @@
 jobs:
-  - name: transfers
-    query_id: 5876393
-    outfile: transfers.parquet
-  - name: transfers_cex_flags
-    query_id: 5884144
-    outfile: transfers_cex_flags.parquet
-  - name: uniswap_swaps
-    query_id: 5876396
-    outfile: uniswap_swaps.parquet
+  - name: stables_cex_hourly_by_token
+    query_id: 5891473
+    outfile: stables_cex_hourly_by_token.parquet
+
+  - name: stables_cex_hourly
+    query_id: 5891512
+    outfile: stables_cex_hourly.parquet
+
+  - name: eth_cex_hourly
+    query_id: 5891723
+    outfile: eth_cex_hourly.parquet
+
+  - name: uniswap_hourly_notional
+    query_id: 5891757
+    outfile: uniswap_hourly_notional.parquet
+
+  # keep the light ones you already have working:
   - name: eth_blocks
     query_id: 5876400
     outfile: eth_blocks.parquet
+
   - name: address_first
     query_id: 5876406
     outfile: address_first.parquet
+
+  - name: active_addresses_hourly
+    query_id: 5891265
+    outfile: active_addresses_hourly.parquet
+
+  - name: new_addresses_hourly
+    query_id: 5891167
+    outfile: new_addresses_hourly.parquet
+
+  # --- heavy raw queries (commented out to avoid 402 on free tier) ---
+  # - name: transfers
+  #   query_id: 5876393
+  #   outfile: transfers.parquet
+  #   # chunk_minutes: 5   # if you ever re-enable, keep tiny chunks
+
+  # - name: transfers_cex_flags
+  #   query_id: 5884144
+  #   outfile: transfers_cex_flags.parquet
+  #   # chunk_minutes: 5   # if you ever re-enable, keep tiny chunks
