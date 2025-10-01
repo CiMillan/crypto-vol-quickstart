@@ -1,114 +1,72 @@
 # macOS / IDE
 .DS_Store
 .vscode/
-
 # Python
 .venv/
 __pycache__/
 *.pyc
 *.pyo
-
 # Data & outputs (kept local)
 data/
 runs/
-
 # Keep empty dir markers
 !data/**/.gitkeep
 !runs/**/.gitkeep
 # Python venv & cache
-.venv/
-__pycache__/
-*.pyc
-
 # Data & runs (keep structure via .gitkeep if needed)
 data/raw/
 data/interim/
 data/processed/
-runs/
 reports/figures/
 reports/tables/
-
 # VS Code
-.vscode/
-
 # Keep data/ out of git by default but allow docs/skeleton
 data/**
 !data/**/
 !data/**/README.md
-!data/**/.gitkeep
-
-# Keep data/ out of git by default but allow docs/skeleton
-data/**
-!data/**/
-!data/**/README.md
-!data/**/.gitkeep
-
 # Keep data/ out of git by default, but allow docs/skeleton
 /data/**
 !/data/
 !/data/**/
-!data/**/.gitkeep
-!data/**/README.md
 .envrc
-.venv/
 # build/packaging noise
 src/*.egg-info/
 *.egg-info/
 dist/
 build/
-
 # notebooks noise
 .ipynb_checkpoints/
 notebooks/**/.ipynb_checkpoints/
-
 # backups
 *.bak
 .python-version
-
 # local hedge files
 hedge_trading.ipynb
 hedge_trading.py
 notebooks/06_hedge_mvp/hedge_trading.ipynb
 notebooks/06_hedge_mvp/hedge_trading.py
-
 # local cache & run outputs
 notebooks/06_hedge_mvp/.mpl/
 **/runs/
-
 # local mpl cache
-notebooks/06_hedge_mvp/.mpl/
 *.parquet
 *.csv
-
 # Local env
 .env
 .env.swp
-
-# Local env
-.env
-.env.swp
-
 # allow docs in processed folder
 !data/processed/
 !data/processed/onchain/
 !data/processed/onchain/README.md
-
 # === build artifacts & caches ===
-__pycache__/
-*.egg-info/
 *.py[cod]
 *.swp
-
 # === runs & reports ===
-runs/
 notebooks/**/runs/
-
 # === data (keep docs in processed/onchain) ===
 data/raw/*.tmp
-data/interim/
-data/processed/
-!data/processed/onchain/
-!data/processed/onchain/README.md
-
 # === backups ===
-*.bak
+
+# === data caches (ignored), but keep the on-chain README ===
+data/processed/*
+data/processed/onchain/*
