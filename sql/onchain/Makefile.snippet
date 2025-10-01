@@ -1,0 +1,13 @@
+# Usage: append to your repo Makefile. Example jobs matching your earlier runs.
+
+.PHONY: dune-onchain-one dune-onchain-all
+
+# Run one query by name with START/END params (to be consumed by your Python/Dune client)
+dune-onchain-one:
+	@echo "Running $${JOB} from $${START} to $${END}..."
+	@python -m scripts.dune_run --job $${JOB} --start "$${START}" --end "$${END}"
+
+# Convenience batch of light jobs (hourly granularity)
+dune-onchain-all:
+	$(MAKE) dune-onchain-one JOB=stables_cex_hourly START=$${START} END=$${END}
+	$(MAKE) dune-onchain-one JOB=eth_cex_hourly     START=$${START} END=$${END}
