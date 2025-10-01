@@ -79,3 +79,7 @@ notebooks/06_hedge_mvp/.mpl/
 notebooks/06_hedge_mvp/.mpl/
 *.parquet
 *.csv
+
+# Local env
+.env
+.env.swp
