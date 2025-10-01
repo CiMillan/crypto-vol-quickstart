@@ -166,3 +166,5 @@ Hourly features aligned to UTC, designed for short-horizon (1h–1d) volatility 
 2. **Decimals applied once:** No sudden ×10^N jumps.  
 3. **Label coverage:** Report `% of volume with is_exchange` label per day.  
 4. **No mixed clocks:** All inputs UTC, then resampled to exact `:00` hourly bins.
+
+- See **processed outputs guide**: [data/processed/onchain/README.md](data/processed/onchain/README.md)
