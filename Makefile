@@ -1,3 +1,9 @@
+# --- auto-load .env (if present) ---
+ifneq (,$(wildcard .env))
+include .env
+export
+endif
+
 .PHONY: nb lab nb-headless verify-parquet clean-lab which-jupyter lab-install deps
 
 # Prefer venv python; fall back to system python3
