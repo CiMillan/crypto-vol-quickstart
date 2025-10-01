@@ -67,7 +67,7 @@ python -m src.hedge_mvp.run \
 
 ---
 
-## 7) Repository layout
+## Repository layout
 
 ```bash
 crypto-vol-quickstart/
@@ -81,7 +81,7 @@ crypto-vol-quickstart/
 
 ---
 
-## 8) Notes
+## Notes
 
 - Public endpoints only; no API keys required for the base pipeline.
 
