@@ -70,7 +70,7 @@ python -m src.hedge_mvp.run \
 ## Repository layout
 
 ```bash
-crypto-vol-quickstart/
+volatility-forecast/
 ├── data/raw/               # raw downloads
 ├── data/processed/         # aligned features/targets (+ on-chain docs)
 ├── runs/                   # experiment & hedge outputs (timestamped)
