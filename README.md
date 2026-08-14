@@ -1,4 +1,4 @@
-# Crypto Volatility Forecasting — Quickstart
+# Volatility Forecasting — Quickstart
 
 **Production-grade scaffold** to **download market data**, **engineer features**, **train & compare models** (GARCH, XGBoost, LSTM, CNN-LSTM), and **backtest** a volatility-targeting strategy with walk-forward validation.  
 
