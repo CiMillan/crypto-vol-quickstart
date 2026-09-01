@@ -1,3 +1,14 @@
+# On-Chain Outputs — Processed Folder
+
+This folder stores **exported/cached parquet files** created by the Dune CLI jobs, plus a quick reference for troubleshooting.
+
+## Pro tip: Warm cache workflow
+If a CLI job is blocked by Dune credits:
+
+1) Open the saved query in Dune with the **exact same** `start`/`end` you pass from CLI.  
+2) **Run it in the UI** — this pays the compute cost.  
+3) Re-run your CLI; fetching results of a **cached** execution is often allowed (plan-dependent).
+
 ---
 
 ## Appendix: On-Chain Feature Set (Minimum-Viable) — Data Dictionary
@@ -21,21 +32,21 @@ Hourly features aligned to UTC, designed for short-horizon (1h–1d) volatility 
 
 ### Features (output columns)
 
-| Column                         | Description                                   | Units | Construction (hourly)                                                                 |
-|--------------------------------|-----------------------------------------------|-------|----------------------------------------------------------------------------------------|
-| `ex_netflow_btc`               | BTC net flow to CEX (in − out)               | BTC   | Sum transfers where CEX is receiver minus where CEX is sender (BTC chain)             |
-| `ex_netflow_eth`               | ETH net flow to CEX (in − out)               | ETH   | Same as above for ETH native (exclude ERC-20)                                         |
-| `stables_netflow_cex_usd`      | Stablecoin net flow to CEX (USDT+USDC+DAI)   | USD   | Sum USD of ERC-20 transfers **into** CEX minus **out**                                |
-| `dex_swap_notional_usd`        | Uniswap v2/v3 total traded notional          | USD   | Sum `amount_usd` over swaps per hour                                                  |
-| `dex_price_impact_bps`         | Avg immediate price impact per swap (abs)    | bps   | `abs((mid_after - mid_before)/mid_before)*1e4`, then mean per hour                    |
-| `gas_basefee_gwei`             | Median basefee within the hour               | gwei  | Median of `basefee_gwei` across blocks in hour                                        |
-| `gas_tip_p90_gwei`             | 90th percentile priority fee                 | gwei  | P90 of `priority_fee_gwei`                                                            |
-| `pct_blocks_full`              | % blocks with utilization ≥ 95%              | %     | Share where `gas_used / gas_limit ≥ 0.95`                                             |
-| `whale_cex_tx_count_gt_1m`     | Count of ≥$1M transfers touching a CEX       | count | Count (native/ERC-20) transfers `amount_usd ≥ 1e6` with CEX as sender or receiver     |
-| `whale_cex_tx_usd_gt_1m`       | USD sum of those whale transfers             | USD   | Sum `amount_usd` for same filter                                                       |
-| `active_addresses_hourly`      | Unique senders+receivers per hour            | count | `nunique(from ∪ to)`                                                                  |
-| `new_addresses_hourly`         | Addresses seen for the first time            | count | Count addresses whose `first_ts` equals current hour                                   |
-| `*_z7d`                        | 7-day z-score of any base series             | z     | `(x − mean_7d) / std_7d` (rolling, min periods = 24)                                  |
+| Column                      | Description                                | Units | Construction (hourly)                                                                     |
+|----------------------------|--------------------------------------------|-------|-------------------------------------------------------------------------------------------|
+| `ex_netflow_btc`           | BTC net flow to CEX (in − out)             | BTC   | Sum transfers where CEX is receiver minus where CEX is sender (BTC chain)                 |
+| `ex_netflow_eth`           | ETH net flow to CEX (in − out)             | ETH   | Same as above for ETH native (exclude ERC-20)                                             |
+| `stables_netflow_cex_usd`  | Stablecoin net flow to CEX (USDT+USDC+DAI) | USD   | Sum USD of ERC-20 transfers **into** CEX minus **out**                                    |
+| `dex_swap_notional_usd`    | Uniswap v2/v3 total traded notional        | USD   | Sum `amount_usd` over swaps per hour                                                      |
+| `dex_price_impact_bps`     | Avg immediate price impact per swap (abs)  | bps   | `abs((mid_after - mid_before)/mid_before)*1e4`, then mean per hour                        |
+| `gas_basefee_gwei`         | Median basefee within the hour             | gwei  | Median of `basefee_gwei` across blocks in hour                                            |
+| `gas_tip_p90_gwei`         | 90th percentile priority fee               | gwei  | P90 of `priority_fee_gwei`                                                                |
+| `pct_blocks_full`          | % blocks with utilization ≥ 95%            | %     | Share where `gas_used / gas_limit ≥ 0.95`                                                 |
+| `whale_cex_tx_count_gt_1m` | Count of ≥$1M transfers touching a CEX     | count | Count (native/ERC-20) transfers `amount_usd ≥ 1e6` with CEX as sender or receiver         |
+| `whale_cex_tx_usd_gt_1m`   | USD sum of those whale transfers           | USD   | Sum `amount_usd` for same filter                                                           |
+| `active_addresses_hourly`  | Unique senders+receivers per hour          | count | `nunique(from ∪ to)`                                                                      |
+| `new_addresses_hourly`     | Addresses seen for the first time          | count | Count addresses whose `first_ts` equals current hour                                       |
+| `*_z7d`                    | 7-day z-score of any base series           | z     | `(x − mean_7d) / std_7d` (rolling, min periods = 24)                                      |
 
 ### Quality checks (must pass)
 1. **Conservation sanity:** `inflows − outflows ≈ Δreserves` over long windows (where reserves available).  
